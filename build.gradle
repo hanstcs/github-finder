@@ -34,7 +34,14 @@ ext {
     coreKtxVersion = "1.3.1"
     appCompatVersion = "1.1.0"
     constraintLayoutVersion = "1.1.3"
+    materialVersion = "1.2.0-alpha03"
+    daggerVersion = "2.24"
     jUnitVersion = "4.12"
     jUnitExtVersion = "1.1.1"
     esspressoVersion = "3.2.0"
+    liveDataVersion = "2.2.0"
+    retrofitVersion = "2.5.0"
+    okhttpLoggingVersion = "3.12.1"
+    mockitoVersion = '3.2.4'
+    archCoreTestingVersion = '2.1.0'
 }
