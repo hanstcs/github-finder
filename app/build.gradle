@@ -56,6 +56,13 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-extensions:$liveDataVersion"
     implementation "androidx.lifecycle:lifecycle-runtime:$liveDataVersion"
 
+    // Glide
+    implementation "com.github.bumptech.glide:glide:$glideVersion"
+    kapt "com.github.bumptech.glide:compiler:$glideVersion"
+
+    // Spinkit
+    implementation "com.github.ybq:Android-SpinKit:$spinKitVersion"
+
     testImplementation "junit:junit:$jUnitVersion"
     testImplementation "org.mockito:mockito-core:$mockitoVersion"
     testImplementation "androidx.arch.core:core-testing:$archCoreTestingVersion"

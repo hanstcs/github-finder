@@ -47,4 +47,6 @@ ext {
     rxAndroidVersion = '2.1.1'
     rxjava2Version = '2.2.6'
     rxjava2RetrofitVersion = '2.4.0'
+    glideVersion = "4.11.0"
+    spinKitVersion = "1.4.0"
 }

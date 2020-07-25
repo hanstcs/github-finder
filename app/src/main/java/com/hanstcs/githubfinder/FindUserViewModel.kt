@@ -1,5 +1,6 @@
 package com.hanstcs.githubfinder
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.hanstcs.githubfinder.model.FindUserViewState
@@ -15,6 +16,10 @@ class FindUserViewModel @Inject constructor(
     private val disposable = CompositeDisposable()
     private val viewStateLiveData = MutableLiveData<FindUserViewState>(FindUserViewState.Idle)
     private val warningMessage = MutableLiveData<Int>()
+
+    fun getViewStateLiveData(): LiveData<FindUserViewState> {
+        return viewStateLiveData
+    }
 
     fun findUsers(query: String) {
         viewStateLiveData.value = FindUserViewState.Loading
