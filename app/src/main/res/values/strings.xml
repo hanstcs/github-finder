@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">GithubFinder</string>
+    <string name="something_wrong">Something wrong while fetching the data</string>
 </resources>
