@@ -8,6 +8,8 @@ import com.hanstcs.githubfinder.repository.UserRepository
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
+import io.reactivex.subjects.PublishSubject
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 class FindUserViewModel @Inject constructor(
@@ -16,6 +18,7 @@ class FindUserViewModel @Inject constructor(
     private val disposable = CompositeDisposable()
     private val viewStateLiveData = MutableLiveData<FindUserViewState>(FindUserViewState.Idle)
     private val warningMessage = MutableLiveData<Int>()
+    private lateinit var searchViewPublisher: PublishSubject<String>
 
     fun getViewStateLiveData(): LiveData<FindUserViewState> {
         return viewStateLiveData
@@ -33,5 +36,33 @@ class FindUserViewModel @Inject constructor(
                     warningMessage.postValue(R.string.something_wrong)
                 })
         )
+    }
+
+    fun startObservingSearchView() {
+        searchViewPublisher = PublishSubject.create()
+        disposable.add(searchViewPublisher
+            .debounce(500, TimeUnit.MILLISECONDS)
+            .filter { it.isNotEmpty() }
+            .distinctUntilChanged()
+            .subscribeOn(Schedulers.computation())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe {
+                findUsers(it)
+            })
+    }
+
+    fun onSearchTextChanged(query: String) {
+        searchViewPublisher.onNext(query)
+    }
+
+    fun onQuerySubmit(query: String) {
+        if (query.isNotEmpty())
+            findUsers(query)
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        disposable.clear()
+        searchViewPublisher.onComplete()
     }
 }

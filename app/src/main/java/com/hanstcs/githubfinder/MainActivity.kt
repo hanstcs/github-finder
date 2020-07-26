@@ -1,6 +1,8 @@
 package com.hanstcs.githubfinder
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
@@ -26,20 +28,23 @@ class MainActivity : AppCompatActivity() {
         viewModel = ViewModelProvider(this, viewModelFactory)
             .get(FindUserViewModel::class.java)
 
-        viewModel.findUsers("h")
         viewModel.getViewStateLiveData().observe(
             this,
             Observer { state ->
                 when (state) {
                     is FindUserViewState.ShowData -> {
-                        initializeAdapter(state.userList)
+                        showUserList(state.userList)
                         showLoading(false)
                     }
                     is FindUserViewState.Loading -> showLoading(true)
-                    is FindUserViewState.Idle -> showLoading(false)
+                    is FindUserViewState.Idle -> {
+                        showLoading(false)
+
+                    }
                 }
             }
         )
+        setupSearch()
     }
 
     private fun showLoading(show: Boolean) {
@@ -54,9 +59,30 @@ class MainActivity : AppCompatActivity() {
         githubFinderApplication.getAppComponent().doInjection(this)
     }
 
-    private fun initializeAdapter(userList: List<UserModel>) {
+    private fun showUserList(userList: List<UserModel>) {
+        binding.tvNoUserFound.visibility = if (userList.isEmpty()) View.VISIBLE else View.GONE
         adapter = UserAdapter(userList)
         binding.rvUsers.layoutManager = LinearLayoutManager(this)
         binding.rvUsers.adapter = adapter
+    }
+
+    private fun setupSearch() {
+        viewModel.startObservingSearchView()
+        binding.btnSubmit.setOnClickListener {
+            viewModel.onQuerySubmit(
+                binding.etSearchUser.text.toString()
+            )
+        }
+        binding.etSearchUser.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                viewModel.onSearchTextChanged(s.toString())
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            }
+        })
     }
 }

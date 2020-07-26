@@ -3,4 +3,7 @@
     <string name="something_wrong">Something wrong while fetching the data</string>
     <string name="avatar_cont_desc">Avatar github profile</string>
     <string name="dummy_name">Iron man</string>
+    <string name="search_user">Search user</string>
+    <string name="search">Search</string>
+    <string name="no_matching_profile">No matching profile found!</string>
 </resources>
